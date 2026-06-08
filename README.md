@@ -64,31 +64,35 @@ The NPU sits behind an `npu_wrapper` that handles the MMIO register file, tile l
 ## File map
 
 ```
-top.vhd                  — SoC top level
-datapath.vhd             — 5-stage pipeline, LDM/STM sequencer, MMIO wiring
-controlunit.vhd          — decode, condition logic, interrupt control
-regfile.vhd              — banked register file with IRQ/FIQ mode support
-alu.vhd                  — ALU with Kogge-Stone adder and barrel shifter
-hazardunit.vhd           — stall and flush logic
-branchp.vhd              — branch predictor
-dcache.vhd               — 4-way set-associative write-back L1 data cache
-imem.vhd                 — instruction memory
-mmiobus.vhd              — MMIO address decoder (P0–P4)
-wallacemul.vhd           — Wallace tree multiplier
-condlogic.vhd            — ARM condition code evaluation
-maindecoder.vhd          — main instruction decoder
-aludecoder.vhd           — ALU control decoder
-pclogic.vhd              — PC update logic
-
-npu_wrapper.vhd          — MMIO ↔ NPU bridge, tile load FSM, result readback
-accelerator_top.vhd      — NPU top: FSM + skew injectors + systolic array
-controller_fsm.vhd       — 4-state NPU sequencer
-systolic_array.vhd       — 32×32 PE grid
-pe.vhd                   — single INT8 MAC processing element
-skew_injector.vhd        — diagonal delay injector
-ping_pong_buffer.vhd     — double-buffer wrapper over two SRAM banks
-sram_1r1w.vhd            — behavioural 1R1W SRAM (replace with foundry macro at tapeout)
-systolic_pkg.vhd         — shared types and constants for the NPU
+Soc \
+  top.vhd                  — SoC top level
+  rtl \
+    datapath.vhd             — 5-stage pipeline, LDM/STM sequencer, MMIO wiring
+    controlunit.vhd          — decode, condition logic, interrupt control
+    alu.vhd                  — ALU with Kogge-Stone adder and barrel shifter
+    hazardunit.vhd           — stall and flush logic
+    branchp.vhd              — branch predictor
+    wallacemul.vhd           — Wallace tree multiplier
+    condlogic.vhd            — ARM condition code evaluation
+    maindecoder.vhd          — main instruction decoder
+    aludecoder.vhd           — ALU control decoder
+    pclogic.vhd              — PC update logic
+    regfile.vhd              — banked register file with IRQ/FIQ mode support
+  npu \ 
+    npu_wrapper.vhd          — MMIO ↔ NPU bridge, tile load FSM, result readback
+    accelerator_top.vhd      — NPU top: FSM + skew injectors + systolic array
+    controller_fsm.vhd       — 4-state NPU sequencer
+    systolic_array.vhd       — 32×32 PE grid
+    pe.vhd                   — single INT8 MAC processing element
+    skew_injector.vhd        — diagonal delay injector
+    ping_pong_buffer.vhd     — double-buffer wrapper over two SRAM banks
+    systolic_pkg.vhd         — shared types and constants for the NPU
+  memory
+    dcache.vhd               — 4-way set-associative write-back L1 data cache
+    imem.vhd                 — instruction memory
+    sram_1r1w.vhd            — behavioural 1R1W SRAM 
+  fabric
+    mmiobus.vhd              — MMIO address decoder (P0–P4)
 ```
 
 ---
@@ -105,6 +109,7 @@ systolic_pkg.vhd         — shared types and constants for the NPU
 ## What's next
 
 - UART, SPI, I2C peripheral implementations
+- Parallelized NPU cores of various sizes with dispatch for different sized tiles
 - Dual core architecture with L2 unified cache
 - AHB-Lite bus fabric replacing the current MMIO bus
 - OpenLane tapeout prep (likely targeting Tiny Tapeout with a smaller 8×8 NPU variant)
