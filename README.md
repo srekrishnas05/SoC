@@ -1,6 +1,6 @@
 # ARMv7 SoC with INT8 Systolic NPU
 
-A from-scratch ARMv7 system-on-chip written in VHDL-2008, targeting bare-metal C and eventual GDSII tapeout on SkyWater 130nm via the Efabless/OpenLane flow. Built as a deep technical learning project and portfolio piece — every module was designed, debugged, and verified by hand.
+A from-scratch ARMv7 system-on-chip written in VHDL-2008, targeting bare-metal C and eventual GDSII tapeout on SkyWater 130nm via the Efabless/OpenLane flow. Built as a deep technical learning project and portfolio piece
 
 ---
 
