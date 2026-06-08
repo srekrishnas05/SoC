@@ -98,7 +98,6 @@ systolic_pkg.vhd         — shared types and constants for the NPU
 - **VHDL-2008** throughout — no vendor-specific primitives
 - **Vivado** — used for behavioural simulation and synthesis checks (not targeting FPGA primitives)
 - **GHDL** — fast behavioural simulation for the NPU (the 32×32 array is too large for comfortable FPGA synthesis)
-- **arm-none-eabi-gcc** — bare-metal C toolchain for software targeting the CPU
 - **SkyWater 130nm PDK + Efabless/OpenLane** — tapeout flow (planned)
 
 ---
@@ -106,9 +105,8 @@ systolic_pkg.vhd         — shared types and constants for the NPU
 ## What's next
 
 - UART, SPI, I2C peripheral implementations
-- L2 unified cache
+- Dual core architecture with L2 unified cache
 - AHB-Lite bus fabric replacing the current MMIO bus
-- GHDL simulation and testbench for the full NPU integration
 - OpenLane tapeout prep (likely targeting Tiny Tapeout with a smaller 8×8 NPU variant)
 
 ---
