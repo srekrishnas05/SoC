@@ -87,11 +87,11 @@ Soc \
     skew_injector.vhd        — diagonal delay injector
     ping_pong_buffer.vhd     — double-buffer wrapper over two SRAM banks
     systolic_pkg.vhd         — shared types and constants for the NPU
-  memory
+  memory \ 
     dcache.vhd               — 4-way set-associative write-back L1 data cache
     imem.vhd                 — instruction memory
     sram_1r1w.vhd            — behavioural 1R1W SRAM 
-  fabric
+  fabric \ 
     mmiobus.vhd              — MMIO address decoder (P0–P4)
 ```
 
