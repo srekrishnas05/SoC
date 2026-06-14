@@ -104,49 +104,54 @@ Each NPU has a 2-state FSM (SEQ_IDLE / SEQ_WAIT) running in its own clock domain
 
 ```
 soc/
-├── top.vhd                     — SoC top level
+├── top.vhd
 ├── rtl/
 │   ├── cpu/
-│   │   ├── datapath.vhd        — 5-stage pipeline, LDM/STM sequencer, MMIO wiring
-│   │   ├── controlunit.vhd     — decode, condition logic, interrupt control
-│   │   ├── alu.vhd             — ALU with Kogge-Stone adder and barrel shifter
-│   │   ├── hazardunit.vhd      — stall and flush logic
-│   │   ├── branchp.vhd         — branch predictor
-│   │   ├── wallacemul.vhd      — Wallace tree multiplier
-│   │   ├── condlogic.vhd       — ARM condition code evaluation
-│   │   ├── maindecoder.vhd     — main instruction decoder
-│   │   ├── aludecoder.vhd      — ALU control decoder
-│   │   ├── pclogic.vhd         — PC update logic
-│   │   └── regfile.vhd         — banked register file with IRQ/FIQ mode support
+│   │   ├── alu.vhd
+│   │   ├── aludecoder.vhd
+│   │   ├── branchp.vhd
+│   │   ├── condlogic.vhd
+│   │   ├── controlunit.vhd
+│   │   ├── datapath.vhd
+│   │   ├── hazardunit.vhd
+│   │   ├── maindecoder.vhd
+│   │   ├── pclogic.vhd
+│   │   ├── regfile.vhd
+│   │   └── wallacemul.vhd
 │   ├── npu/
-│   │   ├── systolic_pkg.vhd    — shared types, constants, tile descriptor layout
-│   │   ├── pe.vhd              — single INT8 MAC processing element
-│   │   ├── systolic_array.vhd  — SIZE×SIZE PE grid (parameterized)
-│   │   ├── skew_injector.vhd   — diagonal operand delay injector
-│   │   ├── controller_fsm.vhd  — 4-state NPU sequencer (IDLE/COMPUTE/DRAIN/STORE)
-│   │   ├── accelerator_top.vhd — NPU tile: FSM + skew injectors + array (generic SIZE)
-│   │   ├── tile_planner.vhd    — pre-compute full tile schedule into sched_ram
-│   │   ├── dispatch_fsm.vhd    — walk schedule RAM, issue descriptors to NPU FIFOs
-│   │   ├── npu_cluster_top.vhd — 6-NPU cluster top with all CDC wiring
-│   │   ├── npu_wrapper.vhd     — MMIO ↔ single NPU bridge (legacy 32×32 path)
-│   │   └── ping_pong_buffer.vhd — double-buffer wrapper over two SRAM banks
+│   │   ├── accelerator_top.vhd
+│   │   ├── controller_fsm.vhd
+│   │   ├── dispatch_fsm.vhd
+│   │   ├── npu_cluster_top.vhd
+│   │   ├── npu_wrapper.vhd
+│   │   ├── pe.vhd
+│   │   ├── skew_injector.vhd
+│   │   ├── systolic_array.vhd
+│   │   ├── systolic_pkg.vhd
+│   │   └── tile_planner.vhd
 │   ├── fabric/
-│   │   ├── mmiobus.vhd         — MMIO address decoder (P0–P4)
-│   │   ├── async_fifo.vhd      — dual-clock FIFO, Gray-coded pointers, 2FF sync
-│   │   ├── cdc_sync.vhd        — 2FF synchronizer for slow control signals
-│   │   ├── cdc_pulse_sync.vhd  — toggle-based pulse synchronizer for done paths
-│   │   └── rst_sync.vhd        — async assert / sync deassert reset synchronizer
+│   │   ├── async_fifo.vhd
+│   │   ├── cdc_pulse_sync.vhd
+│   │   ├── cdc_sync.vhd
+│   │   ├── mmiobus.vhd
+│   │   └── rst_sync.vhd
 │   └── memory/
-│       ├── dcache.vhd          — 4-way set-associative write-back L1 data cache
-│       ├── imem.vhd            — instruction memory
-│       ├── sched_ram.vhd       — tile descriptor schedule RAM (65536 × 136-bit)
-│       └── sram_1r1w.vhd       — behavioural 1R1W SRAM primitive
+│       ├── dcache.vhd
+│       ├── imem.vhd
+│       ├── sched_ram.vhd
+│       └── sram_1r1w.vhd
+│       └── ping_pong_buffer.vhd
 └── tb/
-    ├── tb_top.vhd              — full SoC integration test
-    ├── tb_ldmstm.vhd           — LDM/STM multi-cycle instruction test
-    ├── tb_irq.vhd              — interrupt system test
-    ├── tb_npu_cluster.vhd      — heterogeneous cluster end-to-end test
-    └── tb_npu2_solo.vhd        — 16×16 NPU numerical correctness (3 cases)
+    ├── tb_alu_ks.vhd
+    ├── tb_alu_shift.vhd
+    ├── tb_bp.vhd
+    ├── tb_irq.vhd
+    ├── tb_ldmstm.vhd
+    ├── tb_mmio_bus.vhd
+    ├── tb_npu_cluster.vhd
+    ├── tb_npu2_solo.vhd
+    ├── tb_top.vhd
+    └── tb_wallacemul.vhd
 ```
 
 ---
