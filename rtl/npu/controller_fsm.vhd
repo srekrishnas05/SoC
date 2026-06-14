@@ -78,7 +78,7 @@ begin
         end if;
     end process;
 
-s    acc_clr    <= '1' when (state_r = S_IDLE and start = '1') else '0';
+    acc_clr    <= '1' when (state_r = S_IDLE and start = '1') else '0';
     stream_en  <= '1' when  state_r = S_COMPUTE               else '0';
     pe_en      <= '1' when (state_r = S_COMPUTE or
                             state_r = S_DRAIN)                 else '0';
