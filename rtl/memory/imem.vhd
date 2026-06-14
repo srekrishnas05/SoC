@@ -13,10 +13,6 @@ architecture Behavioral of imem is
     type imem_t is array (0 to 255) of std_logic_vector(31 downto 0);
     signal mem : imem_t := (
 
-        -- ======================================================
-        -- ARM Vector Table (0x00-0x1C)
-        -- Branch encoding: target = (PC+4) + offset
-        -- ======================================================
         0  => x"EA00001C",  -- 0x00: B main          (-> 0x20)
         1  => x"EAFFFFFC",  -- 0x04: B . (und stub)
         2  => x"EAFFFFFC",  -- 0x08: B . (swi stub)
@@ -26,9 +22,6 @@ architecture Behavioral of imem is
         6  => x"EA000044",  -- 0x18: B irq_handler   (-> 0x60)
         7  => x"EAFFFFFC",  -- 0x1C: B . (FIQ stub)
 
-        -- ======================================================
-        -- Main code (0x20)
-        -- ======================================================
         8  => x"E2801001",  -- 0x20: ADD R1, R0, #1      R1 = 1
         9  => x"E2802002",  -- 0x24: ADD R2, R0, #2      R2 = 2
         10 => x"E2803004",  -- 0x28: ADD R3, R0, #4      R3 = 4
@@ -49,12 +42,6 @@ architecture Behavioral of imem is
 
         17 => x"EAFFFFFC",  -- 0x44: B . (halt loop)
 
-        -- ======================================================
-        -- IRQ Handler (0x60 = index 24)
-        -- Entered when irq_line fires and CPSR.I=0
-        -- LR_irq = address of interrupted instruction + 4
-        -- Return: SUBS PC, LR, #4
-        -- ======================================================
         24 => x"E280A0AB",  -- 0x60: ADD R10, R0, #0xAB  (ISR marker)
         25 => x"E25EF004",  -- 0x64: SUBS PC, LR, #4     (return from IRQ)
 

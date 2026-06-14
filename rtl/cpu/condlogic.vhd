@@ -45,13 +45,11 @@ begin
         '1' when "1110",                                         -- AL
         '0' when others;
 
-    -- flagwin pre-gated with condexs in controlunit - use directly
     flagw <= flagwin;
 
     process(clk)
     begin
         if rising_edge(clk) then
-            -- Each flag updated independently based on its own enable bit
             if flagw(3) = '1' then uflags_s(3) <= aluflag(3); end if;  -- N
             if flagw(2) = '1' then uflags_s(2) <= aluflag(2); end if;  -- Z
             if flagw(1) = '1' then uflags_s(1) <= aluflag(1); end if;  -- C

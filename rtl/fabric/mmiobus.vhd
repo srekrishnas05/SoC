@@ -60,7 +60,6 @@ begin
  
     process(all)
     begin
-        -- Default: drive all peripheral enables low, zeros everywhere
         mem_addr  <= addr;
         mem_wdata <= wdata;
         mem_we    <= '0';
@@ -74,7 +73,6 @@ begin
         rdata <= (others => '0');
  
         if addr(31 downto 16) = DMEM_BASE_HI then
-            -- ---- Data memory ----
             mem_we <= we;
             rdata  <= mem_rdata;
  

@@ -32,7 +32,6 @@ architecture Behavioral of tb_alu_ks is
     signal result   : std_logic_vector(31 downto 0);
     signal flags    : std_logic_vector(3 downto 0);  -- N Z C V
 
-    -- Flag aliases for readability
     alias flag_N : std_logic is flags(3);
     alias flag_Z : std_logic is flags(2);
     alias flag_C : std_logic is flags(1);

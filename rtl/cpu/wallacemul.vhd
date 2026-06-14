@@ -2,21 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
--- ============================================================
--- Wallace Tree Multiplier
--- ============================================================
--- 3-stage pipeline:
---   Stage 1: Partial product generation (sign-magnitude)
---   Stage 2: CSA tree reduction to 2 rows
---   Stage 3: Final Kogge-Stone CPA, negate if signed negative
---
--- signed_mode=0: unsigned multiply
--- signed_mode=1: signed multiply (sign-magnitude method)
---   - Extract absolute values, multiply unsigned
---   - Negate result in stage 3 if signs of inputs differ
---
--- Lower 32 bits returned (MUL instruction)
--- ============================================================
+
 
 entity wallace_multiplier is
     port (
@@ -33,9 +19,6 @@ end wallace_multiplier;
 
 architecture Behavioral of wallace_multiplier is
 
-    -- --------------------------------------------------------
-    -- Kogge-Stone adder (64-bit version for final CPA)
-    -- --------------------------------------------------------
     function kogge_stone_64 (
         a        : std_logic_vector(63 downto 0);
         b        : std_logic_vector(63 downto 0);
@@ -77,9 +60,6 @@ architecture Behavioral of wallace_multiplier is
         return sum;
     end function;
 
-    -- --------------------------------------------------------
-    -- Carry Save Adder: reduces 3 rows to 2
-    -- --------------------------------------------------------
     procedure csa_64 (
         a      : in  std_logic_vector(63 downto 0);
         b      : in  std_logic_vector(63 downto 0);
@@ -93,9 +73,6 @@ architecture Behavioral of wallace_multiplier is
         cout     := carries(62 downto 0) & '0';
     end procedure;
 
-    -- --------------------------------------------------------
-    -- Pipeline stage registers
-    -- --------------------------------------------------------
     type pp_array is array(0 to 31) of std_logic_vector(63 downto 0);
     signal pp_s1         : pp_array;
     signal s1_valid      : std_logic := '0';
@@ -117,9 +94,6 @@ begin
     valid     <= s3_valid;
     result_lo <= s3_result;
 
-    -- --------------------------------------------------------
-    -- STAGE 1: Partial product generation (sign-magnitude)
-    -- --------------------------------------------------------
     process(clk)
         variable a_abs   : std_logic_vector(31 downto 0);
         variable b_abs   : std_logic_vector(31 downto 0);
@@ -173,9 +147,6 @@ begin
         end if;
     end process;
 
-    -- --------------------------------------------------------
-    -- STAGE 2: CSA tree reduction to 2 rows
-    -- --------------------------------------------------------
     process(clk)
         variable s, c : std_logic_vector(63 downto 0);
         variable r    : pp_array;
@@ -214,9 +185,6 @@ begin
         end if;
     end process;
 
-    -- --------------------------------------------------------
-    -- STAGE 3: Final CPA + sign correction
-    -- --------------------------------------------------------
     process(clk)
         variable final_sum : std_logic_vector(64 downto 0);
         variable lo32      : std_logic_vector(31 downto 0);

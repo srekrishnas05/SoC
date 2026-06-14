@@ -2,9 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
--- ============================================================
--- ALU with Kogge-Stone adder and barrel shifter
--- ============================================================
+
 -- alu_ctrl:
 --   000 = ADD       001 = SUB
 --   010 = AND       011 = OR
@@ -19,7 +17,6 @@ use IEEE.NUMERIC_STD.ALL;
 -- Flags: N Z C V
 --   N/Z: valid for all ops
 --   C/V: ADD/SUB carry/overflow; SHIFT sets C to last bit out
--- ============================================================
 
 entity ALU is
     port (
@@ -115,16 +112,14 @@ begin
         elsif alu_ctrl = "100" then
             res := a xor b;
         elsif alu_ctrl = "101" then
-            -- MUL handled externally by Wallace tree in datapath
             res := (others => '0');
 
         elsif alu_ctrl = "110" then
-            -- Barrel shifter - operates on a, amount from shift_amt
             amt   := to_integer(unsigned(shift_amt));
             c_out := '0';
 
             case shift_type is
-                when "00" =>  -- LSL: logical shift left
+                when "00" =>  
                     if amt = 0 then
                         res   := a;
                         c_out := '0';
@@ -133,19 +128,17 @@ begin
                         c_out := a(32 - amt);  -- last bit shifted out
                     end if;
 
-                when "01" =>  -- LSR: logical shift right
+                when "01" =>  
                     if amt = 0 then
-                        -- ARM encodes LSR #0 as LSR #32
                         res   := (others => '0');
                         c_out := a(31);
                     else
                         res   := std_logic_vector(shift_right(unsigned(a), amt));
-                        c_out := a(amt - 1);  -- last bit shifted out
+                        c_out := a(amt - 1); 
                     end if;
 
-                when "10" =>  -- ASR: arithmetic shift right (sign extend)
+                when "10" =>  
                     if amt = 0 then
-                        -- ARM encodes ASR #0 as ASR #32
                         res   := (others => a(31));
                         c_out := a(31);
                     else
@@ -153,17 +146,14 @@ begin
                         c_out := a(amt - 1);  -- last bit shifted out
                     end if;
 
-                when "11" =>  -- ROR: rotate right
+                when "11" =>  
                     if amt = 0 then
-                        -- ARM encodes ROR #0 as RRX (rotate right through carry)
-                        -- RRX: C flag becomes bit 31, a shifts right 1
-                        -- C_in not available here - treat as ROR #32 (no-op)
                         res   := a;
                         c_out := a(0);
                     else
                         res   := std_logic_vector(
                                     unsigned(a) ror amt);
-                        c_out := a(amt - 1);  -- last bit rotated out
+                        c_out := a(amt - 1);  
                     end if;
 
                 when others =>

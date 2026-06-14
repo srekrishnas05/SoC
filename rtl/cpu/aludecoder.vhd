@@ -11,13 +11,13 @@ entity aludecoder is
         );
 end aludecoder;
 
--- ============================================================
+-- s
 -- flagw encoding (4 bits - N Z C V):
 --   "0000" = no flags updated
 --   "1111" = all flags (ADD, SUB, CMP)
 --   "1100" = N and Z only (AND, OR, XOR, MUL)
 --   "1110" = N, Z, C (SHIFT - C = last bit out, V preserved)
--- ============================================================
+-- 
 
 architecture Behavioral of aludecoder is
 begin

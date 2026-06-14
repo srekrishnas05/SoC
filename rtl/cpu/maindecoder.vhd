@@ -72,9 +72,7 @@ begin
             immsrc <= "10";
             regsrc <= "01";
         elsif (opcode = "10" and funct5 = '0') then
-            -- LDM/STM: ARM encoding instr[27:25]="100"
-            -- and memory operations. Maindecoder outputs all zeros
-            -- so the normal pipeline sees a NOP while sequencer runs.
+
             b      <= '0';
             m2r    <= '0';
             mw     <= '0';

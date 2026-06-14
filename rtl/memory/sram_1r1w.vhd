@@ -2,13 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
--- ============================================================
--- Single-Port SRAM Model (1 read, 1 write)
--- ============================================================
--- Synchronous write and synchronous read. Read data is
--- registered, so rdata appears one cycle after raddr.
--- Memory contents zero-initialized at elaboration.
--- ============================================================
+
 
 entity sram_1r1w is
     generic (

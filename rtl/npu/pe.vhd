@@ -5,23 +5,12 @@ use IEEE.NUMERIC_STD.ALL;
 library work;
 use work.systolic_pkg.all;
 
--- ============================================================
--- Processing Element (output-stationary INT8 MAC)
--- ============================================================
--- One cell of the 32x32 array.
---
---   a_in : activation arriving from the west
---   b_in : weight    arriving from the north
---   a_out: activation forwarded to the east  (1-cycle delay)
---   b_out: weight    forwarded to the south  (1-cycle delay)
---   c_out: current accumulator value
---
--- acc_clr clears the accumulator (start of a new output tile).
--- When en is asserted, acc += a_in * b_in (signed INT8 x INT8).
--- Accumulator initialized to zero at elaboration.
--- ============================================================
 
 entity pe is
+    generic (
+        SIZE : natural := 32  -- parent array dimension (unused in PE logic,
+                               -- carried for structural consistency)
+    );
     port (
         clk     : in  std_logic;
         en      : in  std_logic;
@@ -43,11 +32,9 @@ begin
     process(clk)
     begin
         if rising_edge(clk) then
-            -- Forward registers (systolic propagation)
             a_r <= a_in;
             b_r <= b_in;
 
-            -- Accumulator update
             if acc_clr = '1' then
                 acc_r <= (others => '0');
             elsif en = '1' then

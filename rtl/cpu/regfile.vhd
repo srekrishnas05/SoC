@@ -2,24 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
--- ============================================================
--- Register File with Banked Registers for Interrupt Modes
--- ============================================================
--- Physical register banks:
---   regs      : User mode R0-R14 (always present)
---   regs_irq  : IRQ mode R13-R14 (SP_irq, LR_irq)
---   regs_fiq  : FIQ mode R8-R14  (R8-R12_fiq, SP_fiq, LR_fiq)
---
--- Mode-aware access: same architectural register number
--- maps to different physical register based on cpu_mode.
---
--- Interrupt entry ports (irq_lr_we / fiq_lr_we):
---   Direct write to banked LR - used at interrupt entry to save
---   PC return address without going through normal pipeline.
---
--- R0  always 0 (hardwired)
--- R15 supplied externally (PC+8 from datapath)
--- ============================================================
+
 
 entity regfile is
     port (
@@ -84,10 +67,6 @@ architecture Behavioral of regfile is
     end function;
 
 begin
-
-    -- --------------------------------------------------------
-    -- Write process (mode-aware, combinational / latch style)
-    -- --------------------------------------------------------
     process(all)
         variable wa : integer;
     begin
@@ -114,9 +93,6 @@ begin
         end if;
     end process;
 
-    -- --------------------------------------------------------
-    -- Read process (mode-aware, combinational)
-    -- --------------------------------------------------------
     process(all)
         variable ra1, ra2 : integer;
     begin

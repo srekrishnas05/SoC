@@ -2,18 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
--- ============================================================
--- Ping-Pong Buffer
--- ============================================================
--- Two SRAM banks plus a 1-bit selector. While one bank is
--- being consumed (read), the other is being produced (written).
---
---   swap = '1'  : flip the producer/consumer assignment
---   bank_sel_r  : 0 -> write bank0, read bank1
---                 1 -> write bank1, read bank0
---
--- Bank selector initialized to '0' at elaboration.
--- ============================================================
+
 
 entity ping_pong_buffer is
     generic (
@@ -53,10 +42,6 @@ architecture Behavioral of ping_pong_buffer is
     end component;
 
 begin
-
-    -- --------------------------------------------------------
-    -- Bank selector
-    -- --------------------------------------------------------
     process(clk)
     begin
         if rising_edge(clk) then
@@ -69,9 +54,6 @@ begin
     we_bank0_s <= we when bank_sel_r = '1' else '0';
     we_bank1_s <= we when bank_sel_r = '0' else '0';
 
-    -- --------------------------------------------------------
-    -- Two physical SRAM banks
-    -- --------------------------------------------------------
     u_bank0 : sram_1r1w
         generic map (
             DATA_WIDTH => DATA_WIDTH,
