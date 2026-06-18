@@ -169,12 +169,13 @@ soc/
 
 ---
 
-## STA & Area
+## STA & Area (For 1 PE)
 
 ### PE synthesis area (Sky130 HD, TT 1.80V, 25°C, pre-layout): 4590.65 µm² total cell area
 
 - Sequential area: 960.92 µm² (20.93%), with 48 dfxtp flops
 - Total mapped cells: 550
+- For a 64x64 array, closer to 18.8M µm² with 197K dfxtp flops
 
 ### PE timing (OpenSTA, same corner, pre-layout):
 
