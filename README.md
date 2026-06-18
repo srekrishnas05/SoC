@@ -169,6 +169,23 @@ soc/
 
 ---
 
+## STA & Area
+
+### PE synthesis area (Sky130 HD, TT 1.80V, 25°C, pre-layout): 4590.65 µm² total cell area
+
+- Sequential area: 960.92 µm² (20.93%), with 48 dfxtp flops
+- Total mapped cells: 550
+
+### PE timing (OpenSTA, same corner, pre-layout):
+
+- Constraint: 10.0 ns clock period (100 MHz)
+- Critical path arrival: 9.4507 ns
+- Required time: 9.9129 ns
+- Slack: +0.4622 ns (MET)
+- Estimated pre-layout Fmax from critical path: ~105.8 MHz
+
+---
+
 ## Toolchain
 
 - **VHDL-2008** throughout — no vendor-specific primitives
